@@ -33,9 +33,6 @@ int main() {
     if (!ImGui::GLFW::Init(window)) {
         return -1;
     }
-    auto&& io = ImGui::GetIO();
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    io.ConfigDockingWithShift = true;
     ImGui::GLFW::UpdateFontTexture();
     bool show_demo_window = true;
     bool show_another_window = true;
