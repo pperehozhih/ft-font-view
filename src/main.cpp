@@ -9,7 +9,33 @@ static void glfw_error_callback(int error, const char* description)
     fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
 
-int main() {
+#ifdef _MSC_VER
+#include <windows.h>
+#include <shellapi.h>
+INT WINAPI wWinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPWSTR, INT)
+{
+    UNREFERENCED_PARAMETER(hInst);
+    UNREFERENCED_PARAMETER(hPrevInstance);
+
+    int argc;
+    char** argv;
+    {
+        LPWSTR* lpArgv = CommandLineToArgvW(GetCommandLineW(), &argc);
+        argv = (char**)malloc(argc * sizeof(char*));
+        int size, i = 0;
+        for (; i < argc; ++i)
+        {
+            size = wcslen(lpArgv[i]) + 1;
+            argv[i] = (char*)malloc(size);
+            wcstombs(argv[i], lpArgv[i], size);
+        }
+        LocalFree(lpArgv);
+    }
+
+#else
+int main(int argc, char* argv[])
+{
+#endif
        // Setup window
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
