@@ -23,6 +23,9 @@ void AddSystemFont(){
 #ifdef _MSC_VER
 #include <windows.h>
 #include <shellapi.h>
+extern "C" {
+    _declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
+}
 INT WINAPI wWinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPWSTR, INT)
 {
     UNREFERENCED_PARAMETER(hInst);
