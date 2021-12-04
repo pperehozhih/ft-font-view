@@ -1,14 +1,25 @@
 #include <imgui.h>
 #include <imgui-glfw.h>
+#include <imgui_freetype.h>
 #include <stdio.h>
 #include <GLFW/glfw3.h>
 #include "TextEditor.h"
+#include "Dialog/FontViewMainWindow.hpp"
 
 static void glfw_error_callback(int error, const char* description)
 {
     fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
-
+#ifdef __APPLE__
+void AddSystemFont(){
+    ImGuiIO& io = ImGui::GetIO();
+    io.Fonts->AddFontFromFileTTF("/System/Library/Fonts/SFNS.ttf", 18);
+}
+#else
+void AddSystemFont(){
+    
+}
+#endif
 #ifdef _MSC_VER
 #include <windows.h>
 #include <shellapi.h>
@@ -54,14 +65,18 @@ int main(int argc, char* argv[])
     GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui + GLFW example", NULL, NULL);
     if (window == NULL)
         return 1;
+    int width, height;
+    glfwGetFramebufferSize(window, &width, &height);
+    glfwGetWindowSize(window, &width, &height);
+    //glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE);
+    //glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_FALSE);
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1); // Enable vsync
     if (!ImGui::GLFW::Init(window)) {
         return -1;
     }
-    ImGui::GLFW::UpdateFontTexture();
-    bool show_demo_window = true;
-    bool show_another_window = true;
+    AddSystemFont();
+    FontViewer::GUI::MainDialog main;
     TextEditor text;
     text.SetImGuiChildIgnored(true);
     text.SetLanguageDefinition(TextEditor::LanguageDefinition::JS());
@@ -71,13 +86,13 @@ int main(int argc, char* argv[])
       // Start the Dear ImGui frame
       ImGui::GLFW::NewFrame();
       
-      
-      ImGui::ShowDemoWindow();
+      main.Update();
+      /*ImGui::ShowDemoWindow();
         text.Render("info");
       
       ImGui::Begin("Hello, world!");
       ImGui::Button("Look at this pretty button");
-      ImGui::End();
+      ImGui::End();*/
       ImGui::Render();
       ImGui::GLFW::Render(window);
 
@@ -91,3 +106,4 @@ int main(int argc, char* argv[])
    return 0;
 
 }
+
