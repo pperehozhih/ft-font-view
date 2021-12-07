@@ -15,6 +15,11 @@ void AddSystemFont(){
     ImGuiIO& io = ImGui::GetIO();
     io.Fonts->AddFontFromFileTTF("/System/Library/Fonts/SFNS.ttf", 18);
 }
+#elif WIN32
+void AddSystemFont() {
+    ImGuiIO& io = ImGui::GetIO();
+    io.Fonts->AddFontFromFileTTF("C:/Windows/Fonts/Segoeui.ttf", 16);
+}
 #else
 void AddSystemFont(){
     
@@ -65,7 +70,7 @@ int main(int argc, char* argv[])
 #endif
 
     // Create window with graphics context
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui + GLFW example", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "FontViewer", NULL, NULL);
     if (window == NULL)
         return 1;
     int width, height;

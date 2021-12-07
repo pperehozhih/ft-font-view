@@ -7,6 +7,7 @@
 
 #include "FontViewMainWindow.hpp"
 #include <nfd.hpp>
+#include "FaceInfo.hpp"
 
 namespace FontViewer {
     namespace GUI {
@@ -23,6 +24,10 @@ namespace FontViewer {
             }
             NFD_Quit();
             return result_str;
+        }
+        void MainDialog::UpdateInfo() {
+            _infos.clear();
+            _infos.push_back(std::make_shared<FaceInfo>(_currentFont));
         }
     }
 }

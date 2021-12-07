@@ -19,6 +19,14 @@ namespace FontViewer {
         class FontInfo{
         public:
             FontInfo(const std::string& fileName);
+            const std::string& getFontName() const {
+                return _name;
+            }
+            virtual ~FontInfo();
+        private:
+            FT_Face _face;
+            std::string _name;
+            bool _faceOpened = false;
         };
         typedef std::shared_ptr<FontInfo> FontInfoPtr;
     }
